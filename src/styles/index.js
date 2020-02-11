@@ -32,6 +32,13 @@ const styles = StyleSheet.create({
         marginTop: 24,
 
     },
+    txtDeltaResult: {
+        color: 'orange',
+        textAlign: 'center',
+        fontSize: 20,
+        marginTop: 10,
+
+    },
     cotainerInput: {
         flexDirection: "row",
         backgroundColor: "#484848",

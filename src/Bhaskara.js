@@ -1,31 +1,56 @@
 import React, { Component } from 'react';
 
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import styles from './styles/index'
 
 // import { Container } from './styles';
 
-export default class Delta extends Component {
+export default class Bhaskara extends Component {
     constructor(props) {
         super(props);
         this.state = {
             a: 0,
             b: 0,
             c: 0,
-
-            // delta: b*b-4*a*c
+            result: '',
+            deltaResult: '',
+            x1: '',
+            x2: '',
         };
         this.delta = this.delta.bind(this);
     }
 
     delta() {
-        let delta = this.state.b * this.state.b - 4 * this.state.a * this.state.c
+        let delta = (this.state.b * this.state.b) - 4 * this.state.a * this.state.c
+
+
+
 
         let s = this.state;
         s.result = delta;
+
         this.setState(s);
 
+        if (s.result < 0) {
+            s.deltaResult = 'A equação não possui resultados reais'
+            s.x1 = ''
+            s.x2 = ''
+        } else if (s.result === 0) {
+            s.deltaResult = 'A equação possui apenas um resultado real ou possui dois resultados iguais;'
+            s.x1 = ''
+            s.x2 = ''
+        } else {
+
+            let x1 = (-this.state.b + Math.sqrt(this.state.result)) / (2 * this.state.a);
+            let x2 = (-this.state.b - Math.sqrt(this.state.result)) / (2 * this.state.a);
+            s.x1 = 'x1 = ' + x1.toFixed(2);
+            s.x2 = 'x2 = ' + x2.toFixed(2);
+            s.deltaResult = ''
+        }
+        Keyboard.dismiss()
+
     }
+
     render() {
         return (
             <View style={styles.container}>
@@ -60,7 +85,7 @@ export default class Delta extends Component {
                         style={styles.txtInput}
                         placeholder='valor de c'
                         placeholderTextColor="#607d8b"
-                        keyboardType='phone-pad'
+                        keyboardType='numeric'
                         onChangeText={(c) => { this.setState({ c }) }}
                     />
                     <Text style={styles.txt}>
@@ -69,18 +94,25 @@ export default class Delta extends Component {
                 </View>
 
                 <View style={styles.cotainerBtn}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.delta }>
                         <Text style={styles.txtBtn}>Calcular Delta</Text>
                     </TouchableOpacity>
 
                 </View>
-
-
-
-
+                <Text style={styles.txtEqual}>
+                    {this.state.result}
+                </Text>
 
                 <Text style={styles.txtEqual}>
-                    {this.state.a}x²{this.state.b}x{this.state.c}=0
+                    {this.state.x1}
+                </Text>
+
+                <Text style={styles.txtEqual}>
+                    {this.state.x2}
+                </Text>
+
+                <Text style={styles.txtDeltaResult}>
+                    {this.state.deltaResult}
                 </Text>
 
             </View>
